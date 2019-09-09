@@ -1,6 +1,10 @@
 // To use node modules(like fs to read files), we require them into our code and store the result in a variable.
-const fs = require(fs);
+const fs = require('fs');
 
-const hello = 'Hello world';
-console.log(hello);
+const textIn = fs.readFileSync('./txt/input.txt', 'utf-8');
+console.log(textIn);
+
+const textOut = `This is what we know about the avocado: ${textIn}.\nCreated on ${Date.now()}`;
+fs.writeFileSync('./txt/output.txt', textOut);
+console.log('File written!');
 
