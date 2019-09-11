@@ -1,3 +1,4 @@
+// core modules
 // To use node modules(like fs to read files), we require them into our code and store the result in a variable.
 const fs = require('fs');
 // http gives us networking capability, such as building a server.
@@ -5,8 +6,18 @@ const http = require('http');
 // for routing
 const url = require('url');
 
+
+
+// third party modules
+const slugify = require('slugify');
+
+
+
+// our own modules
 // import modules
 const replaceTemplate = require('./modules/replaceTemplate');
+
+
 
 ////////////////////////////////
 // FILES
@@ -39,8 +50,12 @@ fs.readFile('./txt/start.txt', 'utf-8', (err, data1) => {
 console.log('Will read file!');
 */
 
+
+
 ////////////////////////////////
 // SERVER
+
+
 
 // this part is executed once, when the app is executed. so sync is fine.
 const tempOverview = fs.readFileSync(`${__dirname}/templates/template-overview.html`, 'utf-8');
@@ -50,10 +65,14 @@ const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product.htm
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
 const dataObj = JSON.parse(data);
 
+const slugs = dataObj.map(el => slugify(el.productName, { lower: true}));
+console.log(slugs);
+
+
 // this is the part where the callback functons is called multiple times, everytime a user trys to access the server.
 const server = http.createServer((req, res) => {
     const { query, pathname } = url.parse(req.url, true);
-    console.log(url.parse(req.url, true));
+    //console.log(url.parse(req.url, true));
 
     // Overview page
     if(pathname === '/' || pathname === '/overview') {
